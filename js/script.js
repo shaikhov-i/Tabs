@@ -14,37 +14,6 @@ window.addEventListener('DOMContentLoaded', function() {
     // 3) Tab content
 
 
-
-
-
-    // Example
-
-    // 1) parent of tab headers
-
-    // <div class="info-header"> 
-
-    // 2) Heads of tabs
-
-    //      <div class="info-header-tab"></div>
-    //      <div class="info-header-tab"></div>
-    //      <div class="info-header-tab"></div>
-    //      <div class="info-header-tab"></div>
-    // </div>
-
-    // 3) Tab content   
-
-    // <div class="info-tabcontent fade">
-    // <div class="info-tabcontent fade">
-    // <div class="info-tabcontent fade">
-    // <div class="info-tabcontent fade">
-
-
-
-
-
-
-
-
     function createTab(infoHeader, headerTab, infoTab) {
         let tab = document.querySelectorAll(headerTab),
             tabContent = document.querySelectorAll(infoTab),
@@ -52,7 +21,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
 
-        // Function for hiding tab contents
+        // Function to hide tab contents
 
         function hideTabContent(a) {
             for (let i = a; i < tabContent.length; i++) {
@@ -66,7 +35,7 @@ window.addEventListener('DOMContentLoaded', function() {
         hideTabContent(1);
 
 
-        // Function for showing tab content
+        // Function to show tab content
 
         function showTabContent(b) {
             if (tabContent[b].classList.contains('hide')) {
@@ -194,11 +163,12 @@ window.addEventListener('DOMContentLoaded', function() {
         statusMessage = document.createElement('div');
     statusMessage.classList.add('status');
 
+
     function getData(form, selector) {
         form.addEventListener('submit', function(event) {
             event.preventDefault();
             form.appendChild(statusMessage);
-
+            document.querySelector('.status').style.color = "white";
             let request = new XMLHttpRequest();
             request.open('POST', 'server.php');
             request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -223,6 +193,14 @@ window.addEventListener('DOMContentLoaded', function() {
         });
     }
     let form = document.querySelector('#form');
+
+
+// To use enter
+
+// getData(1, 2);
+// 1) form
+// 2) input
+
     getData(mainForm, '.popup-form__input');
     getData(form, '#form input');
 
