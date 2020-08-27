@@ -134,4 +134,96 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     }
     setClock('timer', deadline);
+
+    // Modal
+
+    function modal(more) {
+        let overlay = document.querySelector('.overlay'),
+            close = document.querySelector('.popup-close');
+
+        more.addEventListener('click', function() {
+            overlay.style.display = 'block';
+            this.classList.add('more-splash');
+            document.body.style.overflow = 'hidden';
+        });
+
+        close.addEventListener('click', function() {
+            overlay.style.display = 'none';
+            more.classList.remove('more-splash');
+            document.body.style.overflow = 'initial';
+        });
+    }
+    modal(document.querySelector('.more'));
+    document.querySelectorAll('.description-btn').forEach(function(element) {
+        modal(element);
+    });
+
+
+
+    // Class Options
+    class Options {
+        constructor(height, width, bg, fontSize, textAlign) {
+            this.height = height;
+            this.width = width;
+            this.bg = bg;
+            this.fontSize = fontSize;
+            this.textAlign = textAlign;
+        }
+        setDiv = function(text, css) {
+            let div = document.createElement('div');
+            document.querySelector('.main').appendChild(div);
+            div.textContent = text;
+            div.style.cssText = css;
+            div.style.height = this.height + "px";
+            div.style.width = this.width + "px";
+            div.style.backgroundColor = this.bg;
+            div.style.fontSize = this.fontSize + "px";
+            div.style.textAlign = this.textAlign;
+
+            console.log(this.height);
+        }
+    };
+
+    let elem = new Options(200, 200, "red", 15, "center");
+    elem.setDiv("Hello", "font-weight: bold");
+
+
+    // Popup form
+
+    let mainForm = document.querySelector('.main-form'),
+        statusMessage = document.createElement('div');
+    statusMessage.classList.add('status');
+
+    function getData(form, selector) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            form.appendChild(statusMessage);
+
+            let request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+            let formData = new FormData(form);
+            request.send(formData);
+
+            request.addEventListener('readystatechange', function() {
+                if (this.status == 200) {
+                    if (this.readyState < 4) {
+                        statusMessage.textContent = "Загружается...";
+                    } else if (this.readyState == 4) {
+                        statusMessage.textContent = "Ваши данные успешно отправлены!";
+                    } else {
+                        statusMessage.textContent = "Что то пошло не так(";
+                    }
+                }
+                document.querySelectorAll(selector).forEach(function(element){
+                    element.value = '';
+                })
+            });
+        });
+    }
+    let form = document.querySelector('#form');
+    getData(mainForm, '.popup-form__input');
+    getData(form, '#form input');
+
 });
